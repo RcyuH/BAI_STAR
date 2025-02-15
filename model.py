@@ -31,7 +31,6 @@ B3: Tính score tổng hợp từ hai chỉ số trên cho các unseen item
 
 B4: Ranking 
     +) Cấu trúc của 1 prompt: Figure 3 in 
-
-
+    +) Chú ý 2 dạng pair-wise và list-wise nên sử dụng giải thuật window slide để tăng tốc độ thuật toán
 
 """
