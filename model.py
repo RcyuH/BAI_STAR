@@ -34,3 +34,55 @@ B4: Ranking
     +) Chú ý 2 dạng pair-wise và list-wise nên sử dụng giải thuật window slide để tăng tốc độ thuật toán
 
 """
+
+import pandas as pd
+import gzip
+import json
+
+def parse(path):
+    g = open(path, 'r', encoding="utf-8")
+    for l in g:
+        yield json.loads(l)
+
+def getDF(path):
+    i = 0
+    df = {}
+    for d in parse(path):
+      df[i] = d
+      i += 1
+    return pd.DataFrame.from_dict(df, orient='index')
+
+#CONST
+path = "/home/rcyuh/Desktop/BAI/Quá trình học/Bước 3/data/"
+
+# meta_data_df = getDF("/home/rcyuh/Desktop/BAI/Quá trình học/Bước 3/data/Beauty_Metadata.json.gz")
+meta_data_df = getDF(path + 'Beauty_Metadata.json.gz')
+review_df = getDF(path + 'Beauty_Review.json.gz')
+user_item_df = pd.read_csv(path + "Beauty_User-Item_Matrix.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
