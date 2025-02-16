@@ -58,9 +58,7 @@ path = "/home/rcyuh/Desktop/BAI/Quá trình học/Bước 3/data/"
 # meta_data_df = getDF("/home/rcyuh/Desktop/BAI/Quá trình học/Bước 3/data/Beauty_Metadata.json.gz")
 meta_data_df = getDF(path + 'Beauty_Metadata.json.gz')
 review_df = getDF(path + 'Beauty_Review.json.gz')
-user_item_df = pd.read_csv(path + "Beauty_User-Item_Matrix.csv")
-
-
+user_item_df = pd.read_csv(path + "Beauty_User-Item_Matrix.csv", names=["itemID", "userID", "rating", "timestamp"], header=None)
 
 
 
