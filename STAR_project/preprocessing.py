@@ -33,7 +33,7 @@ class preProcessing_metadata:
     def __init__(self):
         pass
     
-    def extract_6_core(self, items_df: pd.DataFrame) -> pd.DataFrame
+    def extract_6_core(self, items_df: pd.DataFrame) -> pd.DataFrame:
         # Trích xuất 6 thuộc tính chính: title, description, category, brand, sales ranking, price
         pass
     
@@ -42,21 +42,22 @@ class preProcessing_metadata:
         pass
     
     def price_processing(self):
-        
+        pass
     
     def rank_processing(self):
+        pass
     
-    def convert_df_to_dict(self, items_df: pd.DataFrame) -> dict  
+    def convert_df_to_dict(self, items_df: pd.DataFrame) -> dict:  
         items_dict = items_df.set_index("asin").to_dict(orient="index")
         
         return items_dict
     
-    def main_flow(self):
+    def processing_flow(self):
         pass
     
 meta_data_df_cleaned = meta_data_df.drop_duplicates(subset=["asin"], keep="first")    
 
-pre = preProcessing()
+pre = preProcessing_metadata()
 meta_data_dict = pre.convert_df_to_dict(meta_data_df_cleaned)
 
 generator = ItemEmbeddingGenerator()
