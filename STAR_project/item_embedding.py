@@ -10,8 +10,10 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 from typing import Dict, Set
 import os
+from pathlib import Path
+import json
 
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+os.environ["TOKENIZjsonERS_PARALLELISM"] = "false"
 
 class ItemEmbeddingGenerator:
     def __init__(self, 
@@ -66,7 +68,45 @@ class ItemEmbeddingGenerator:
             embeddings[item_id] = np.array(vector)
 
         return embeddings
-
+    
+    # def save_embeddings(self, embeddings, file_path="data_save/embeddings.json"):
+    #     # Chuyển `ndarray` thành list để JSON có thể lưu trữ
+    #     formatted_embeddings = {str(k): v.tolist() for k, v in embeddings.items()}
+    #     with open(file_path, 'w') as f:
+    #         json.dump(formatted_embeddings, f)
+    
+    # def load_embeddings(self, file_path="data_save/embeddings.json"):
+    #     with open(file_path, 'r') as f:
+    #         data = json.load(f)
+    #         # Chuyển list về `ndarray`
+            
+    #         return {int(k): np.array(v) for k, v in data.items()}
+    
+    def save_embeddings(self, embeddings, save_dir='data_save/embeddings'):
+        """Save embeddings to disk"""
+        Path(save_dir).mkdir(parents=True, exist_ok=True)
+        items = sorted(embeddings.keys())
+        embedding_array = np.stack([embeddings[item] for item in items])
+        np.save(f'{save_dir}/embeddings.npy', embedding_array)
+        np.save(f'{save_dir}/items.npy', np.array(items))
+        print(f"Saved embeddings to {save_dir}")
+        
+    def load_embeddings(self, load_dir='data_save/embeddings'):
+        """Load embeddings and create item mapping"""
+        try:
+            embedding_array = np.load(f'{load_dir}/embeddings.npy')
+            items = np.load(f'{load_dir}/items.npy')
+            embeddings = {item: emb for item, emb in zip(items, embedding_array)}
+            item_to_idx = {item: idx for idx, item in enumerate(items)}
+            print(f"Loaded embeddings for {len(embeddings)} items")
+            
+            return embeddings, item_to_idx
+        
+        except FileNotFoundError:
+            print("No saved embeddings found")
+            
+            return None, None
+    
     def debug_prompt(self, items: Dict, num_samples: int = 3):
         """Hiển thị ví dụ prompt"""
         print("\nSample prompts:")
@@ -86,5 +126,6 @@ if __name__ == "__main__":
     generator = ItemEmbeddingGenerator()
     generator.debug_prompt(items)
 
-    # embeddings = generator.generate_item_embeddings(items)
-    # print("\nEmbedding size:", embeddings["item1"].shape)  # Output: (384,)
+    embeddings = generator.generate_item_embeddings(items)
+    print("\nEmbedding size:", embeddings["item1"].shape)  # Output: (384,)
+    

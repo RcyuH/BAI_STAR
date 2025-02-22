@@ -74,3 +74,52 @@ class STARRetrieval:
         self.semantic_matrix = np.maximum(0, semantic_matrix)
         
         return self.semantic_matrix
+    
+    def score_candidates(self,
+                        user_history: List[str],
+                        ratings: List[float],
+                        candidate_items: List[str] = None,
+                        top_k: int = None) -> List[Tuple[str, float]]:
+        if self.collaborative_matrix is None:
+            raise ValueError("Collaborative matrix not set. Run compute_collaborative_relationships first.")
+
+        """Score candidate items based on user history"""
+        if len(user_history) > self.history_length:
+            user_history = user_history[-self.history_length:]
+            ratings = ratings[-self.history_length:]
+        
+        if candidate_items is None:
+            candidate_items = [item for item in self.item_to_idx.keys() 
+                             if item not in set(user_history)]
+        
+        scores = {}
+        n = len(user_history)
+        
+        for candidate in candidate_items:
+            if candidate not in self.item_to_idx or candidate in user_history:
+                continue
+                
+            cand_idx = self.item_to_idx[candidate]
+            score = 0.0
+            
+            for t, (hist_item, rating) in enumerate(zip(reversed(user_history), 
+                                                      reversed(ratings))):
+                if hist_item not in self.item_to_idx:
+                    continue
+                    
+                hist_idx = self.item_to_idx[hist_item]
+                sem_sim = self.semantic_matrix[cand_idx, hist_idx]
+                collab_sim = self.collaborative_matrix[cand_idx, hist_idx]
+                
+                combined_sim = (self.semantic_weight * sem_sim + 
+                              (1 - self.semantic_weight) * collab_sim)
+                
+                score += (1/n) * rating * (self.temporal_decay ** t) * combined_sim
+            
+            scores[candidate] = score
+        
+        sorted_items = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+        if top_k:
+            sorted_items = sorted_items[:top_k]
+            
+        return sorted_items

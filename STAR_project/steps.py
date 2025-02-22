@@ -28,3 +28,4 @@ B4: Ranking
     +) Chú ý 2 dạng pair-wise và list-wise nên sử dụng giải thuật window slide để tăng tốc độ thuật toán
 
 """
+
