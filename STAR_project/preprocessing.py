@@ -11,6 +11,7 @@ import numpy as np
 import gzip
 import json
 from item_embedding import ItemEmbeddingGenerator
+from typing import List
 
 def parse(path):
     g = open(path, 'r', encoding="utf-8")
@@ -25,11 +26,6 @@ def getDF(path):
       i += 1
     return pd.DataFrame.from_dict(df, orient='index')
 
-#CONST
-path = "/home/rcyuh/Desktop/2. BAI/Quá trình học/Bước 3/data/"
-
-meta_data_df = getDF(path + 'Beauty_Metadata.json.gz')
-
 class preProcessing_metadata:
     def __init__(self):
         pass
@@ -38,7 +34,7 @@ class preProcessing_metadata:
         # Trích xuất 7 thuộc tính chính: title, description, category, brand, sales ranking, price, asin
         
         return items_df[['title', 'description', 'category', 'brand', 'rank', 'price', 'asin']] 
-    
+    List
     def drop_duplicate(self, items_df: pd.DataFrame) -> pd.DataFrame:
         # Xóa các product có id trùng và giữ lại cái đầu tiên
         
@@ -72,13 +68,44 @@ class preProcessing_metadata:
         items_df_clean = self.desc_processing(items_df_clean)
         items_df_clean = self.convert_df_to_dict(items_df_clean)
         
-        return items_df_clean   
+        return items_df_clean
+
+class preProcessing_user_item_matrix:
+    def __init__(self, matrix_df: pd.DataFrame):
+        self.matrix = matrix_df
+    
+        # Rearrange
+        desired_order = ["userID", "itemID", "timestamp", "rating"]
+
+        if list(self.matrix.columns) != desired_order:
+            self.matrix = self.matrix[desired_order]
+    
+    def convert_df_to_list(self, matrix_df: pd.DataFrame) -> list:
+        """
+        convert user-item matrix (dataframe) -> list of tuples (1 tuple = 1 row in df)
+        
+        """
+        matrix_list = [tuple(row) for row in self.matrix.itertuples(index=False, name=None)]
+        
+        return matrix_list
+        
 
 if __name__ == "__main__":
+    # CONST
+    path = "/home/rcyuh/Desktop/2. BAI/Quá trình học/Bước 3/data/"
+    
+    # Get data
+    meta_data_df = getDF(path + 'Beauty_Metadata.json.gz')
+    user_item_df = pd.read_csv(path + "Beauty_User-Item_Matrix.csv", names=["itemID", "userID", "rating", "timestamp"], header=None)
+
     # Ví dụ sử dụng
     pre = preProcessing_metadata()
     meta_data_dict = pre.processing_flow(meta_data_df)
     
     generator = ItemEmbeddingGenerator()
     generator.debug_prompt(meta_data_dict)
+    # embeddings = generator.generate_item_embeddings(meta_data_dict)
+    
+    # pre = preProcessing_user_item_matrix(user_item_df)
+    # matrix_list = pre.convert_df_to_list(user_item_df)
     

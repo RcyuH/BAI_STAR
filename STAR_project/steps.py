@@ -12,8 +12,8 @@ B1: Tính semantic similiraty
 
 B2: Tính collaborative commonality
     +) Input: User-Item matrix C, input đặc trưng của bài toán đề xuất
-              Giá trị trong đó là ratings, number of clicks,... (Chưa thấy đoạn nào đề cập đến cái lày)
-    +) Tính cosine similiratity cho đôi Stepsmột "hàng trong C"  
+              Giá trị trong đó là 1 nếu user rated item, ngược lại là 0
+    +) Tính cosine similiratity cho đôi một "hàng trong C"  
     +) Output: Ma trận Rc (size NxN, N là số items trong system)
 
 B3: Tính score tổng hợp từ hai chỉ số trên cho các unseen item 
