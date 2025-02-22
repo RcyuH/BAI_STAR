@@ -31,6 +31,10 @@ from scipy.spatial.distance import cosine, cdist
 from scipy.sparse import csr_matrix
 from tqdm import tqdm
 
+# only for testing
+import itertools
+from item_embedding import ItemEmbeddingGenerator
+
 class STARRetrieval:
     def __init__(self, 
                  semantic_weight: float = 0.5,    
@@ -122,7 +126,20 @@ class STARRetrieval:
         if top_k:
             sorted_items = sorted_items[:top_k]
             
-        return sorted_items
+        return sorted_items # List of tuples, mỗi tuple gồm itemID và score của item đó với user u
     
 if __name__ == "__main__":
-    pass
+    # Load data
+    gen = ItemEmbeddingGenerator()
+    embeddings, _ = gen.load_embeddings()
+    size_test = 4
+    sampled_embeddings = dict(itertools.islice(embeddings.items(), size_test))
+    
+    retrieval = STARRetrieval(
+        semantic_weight=0.5,
+        temporal_decay=0.7,
+        history_length=3
+    )
+    
+    semantic_matrix = retrieval.compute_semantic_relationships(sampled_embeddings)
+    

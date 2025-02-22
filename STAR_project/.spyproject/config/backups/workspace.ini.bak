@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['main.py', 'preprocessing.py', 'item_embedding.py', 'steps.py', '../../../../../../.config/spyder-py3/autosave/main.py', 'collaborative_commonality.py', 'retrieval_stage.py']
+recent_files = ['preprocessing.py', 'steps.py', 'collaborative_commonality.py', 'item_embedding.py', 'retrieval_stage.py', 'main.py']
 
 [main]
 version = 0.2.0
