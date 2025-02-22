@@ -73,12 +73,17 @@ class preProcessing_metadata:
 class preProcessing_user_item_matrix:
     def __init__(self, matrix_df: pd.DataFrame):
         self.matrix = matrix_df
+        self.history = {} # Key: usserID, Val: List of itemID
     
         # Rearrange
         desired_order = ["userID", "itemID", "timestamp", "rating"]
 
         if list(self.matrix.columns) != desired_order:
             self.matrix = self.matrix[desired_order]
+            
+        # Get user history by timestamp
+        df_sorted = matrix_df.sort_values(by=['userID', 'timestamp'])
+        self.history = df_sorted.groupby('userID')['itemID'].apply(list).to_dict()
     
     def convert_df_to_list(self, matrix_df: pd.DataFrame) -> list:
         """
@@ -108,4 +113,5 @@ if __name__ == "__main__":
     
     # pre = preProcessing_user_item_matrix(user_item_df)
     # matrix_list = pre.convert_df_to_list(user_item_df)
+    # history = pre.history
     

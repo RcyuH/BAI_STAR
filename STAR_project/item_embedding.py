@@ -86,5 +86,5 @@ if __name__ == "__main__":
     generator = ItemEmbeddingGenerator()
     generator.debug_prompt(items)
 
-# embeddings = generator.generate_item_embeddings(items)
-# print("\nEmbedding size:", embeddings["item1"].shape)  # Output: (384,)
+    # embeddings = generator.generate_item_embeddings(items)
+    # print("\nEmbedding size:", embeddings["item1"].shape)  # Output: (384,)
