@@ -123,3 +123,6 @@ class STARRetrieval:
             sorted_items = sorted_items[:top_k]
             
         return sorted_items
+    
+if __name__ == "__main__":
+    pass

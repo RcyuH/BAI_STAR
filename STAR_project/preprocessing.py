@@ -112,6 +112,7 @@ if __name__ == "__main__":
     generator = ItemEmbeddingGenerator()
     generator.debug_prompt(meta_data_dict)
     # embeddings = generator.generate_item_embeddings(meta_data_dict)
+    # generator.save_embeddings(embeddings)
     
     # pre = preProcessing_user_item_matrix(user_item_df)
     # matrix_list = pre.convert_df_to_list(user_item_df)
