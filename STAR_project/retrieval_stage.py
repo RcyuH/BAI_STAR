@@ -74,7 +74,7 @@ class STARRetrieval:
         semantic_matrix = 1 - cdist(embeddings_array, embeddings_array, metric='cosine')
         np.fill_diagonal(semantic_matrix, 0)
         
-        # normalize: trong contex này, Đối lập (< 0) =  Không liên quan (0)
+        # normalize: trong context này, Đối lập (< 0) =  Không liên quan (0)
         self.semantic_matrix = np.maximum(0, semantic_matrix)
         
         return self.semantic_matrix

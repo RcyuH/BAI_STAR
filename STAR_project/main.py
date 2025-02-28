@@ -9,6 +9,15 @@ Created on Fri Feb 14 13:31:03 2025
 import pandas as pd
 import gzip
 import json
+from ast import Dict, Set
+import os
+from typing import List, Dict, Set
+import numpy as np
+from pathlib import Path
+from collaborative_commonality import CollaborativeRelationshipProcessor
+from item_embedding import ItemEmbeddingGenerator
+from preprocessing import preProcessing_metadata, preProcessing_user_item_matrix
+from retrieval_stage import STARRetrieval
 
 def parse(path):
     g = open(path, 'r', encoding="utf-8")
@@ -23,15 +32,16 @@ def getDF(path):
       i += 1
     return pd.DataFrame.from_dict(df, orient='index')
 
-#CONST
+# CONST
 path = "/home/rcyuh/Desktop/2. BAI/Quá trình học/Bước 3/data/"
 
 meta_data_df = getDF(path + 'Beauty_Metadata.json.gz')
 review_df = getDF(path + 'Beauty_Review.json.gz')
 user_item_df = pd.read_csv(path + "Beauty_User-Item_Matrix.csv", names=["itemID", "userID", "rating", "timestamp"], header=None)
 
-print(meta_data_df.isnull().sum())
-
+# Get item embeddings
+generator = ItemEmbeddingGenerator()
+embeddings, item_to_idx = generator.load_embeddings()
 
 
 
