@@ -41,7 +41,23 @@ user_item_df = pd.read_csv(path + "Beauty_User-Item_Matrix.csv", names=["itemID"
 
 # Get item embeddings
 generator = ItemEmbeddingGenerator()
-embeddings, item_to_idx = generator.load_embeddings()
+item_embeddings, item_to_idx = generator.load_embeddings()
+
+# # Compute semantic relationship
+# retrieval = STARRetrieval()
+# semantic_matrix = retrieval.compute_semantic_relationships(item_embeddings)
+
+# # Tính collaborative matrix
+# preprocess_matrix = preProcessing_user_item_matrix(user_item_df)
+# user_history = preprocess_matrix.interaction_history
+# rating_history = preprocess_matrix.rating_history 
+# interactions = preprocess_matrix.convert_df_to_list(user_item_df)
+
+# collab_processor = CollaborativeRelationshipProcessor()
+# collab_processor.process_interactions(interactions = interactions, item_mapping = item_to_idx)
+
+# Tính scores for unseen items
+
 
 
 
