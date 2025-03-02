@@ -69,19 +69,6 @@ class ItemEmbeddingGenerator:
 
         return embeddings
     
-    # def save_embeddings(self, embeddings, file_path="data_save/embeddings.json"):
-    #     # Chuyển `ndarray` thành list để JSON có thể lưu trữ
-    #     formatted_embeddings = {str(k): v.tolist() for k, v in embeddings.items()}
-    #     with open(file_path, 'w') as f:
-    #         json.dump(formatted_embeddings, f)
-    
-    # def load_embeddings(self, file_path="data_save/embeddings.json"):
-    #     with open(file_path, 'r') as f:
-    #         data = json.load(f)
-    #         # Chuyển list về `ndarray`
-            
-    #         return {int(k): np.array(v) for k, v in data.items()}
-    
     def save_embeddings(self, embeddings, save_dir='data_save/embeddings'):
         """Save embeddings to disk"""
         Path(save_dir).mkdir(parents=True, exist_ok=True)
